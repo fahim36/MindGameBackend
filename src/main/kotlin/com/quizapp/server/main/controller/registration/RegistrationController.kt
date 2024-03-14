@@ -15,23 +15,23 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/register")
 class RegistrationController(private val userService: UserService) {
 
 
     @PostMapping
-    fun create(@RequestBody userRequest: RegRequest): RegResponse {
-        return userService.createUser(userRequest.toModel())?.toResponse()
-                ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot Create a User")
+    fun create(@RequestBody userRequest: RegRequest): SignUpResponse {
+        return SignUpResponse(HttpStatus.OK,"Successfully created user", userService.createUser(userRequest.toModel())?.toResponse()
+                ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot Create a User"))
     }
 
     @GetMapping
-    fun listAll(): List<RegResponse> {
+    fun listAll(): List<RegisteredUserInfo> {
         return userService.findAll().map { it.toResponse() }
     }
 
     @GetMapping("/{uuid}")
-    fun findByUUID(@PathVariable uuid: UUID): RegResponse {
+    fun findByUUID(@PathVariable uuid: UUID): RegisteredUserInfo {
         return userService.findByUUID(uuid)?.toResponse()
                 ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find a User")
     }
@@ -52,6 +52,6 @@ private fun RegRequest.toModel(): User {
     return User(UUID.randomUUID(), password, username, email, role,isColorBlind ,hasLeaderBoardPermission)
 }
 
-fun User.toResponse(): RegResponse {
-    return RegResponse(id, username, role, email , hasLeaderBoard_permission , isColorBlind )
+fun User.toResponse(): RegisteredUserInfo {
+    return RegisteredUserInfo(id, username, role, email , hasLeaderBoard_permission , isColorBlind )
 }
