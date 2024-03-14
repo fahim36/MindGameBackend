@@ -1,5 +1,6 @@
 package com.quizapp.server.main.controller.registration
 
+import com.quizapp.server.main.exceptions.CustomException
 import com.quizapp.server.main.models.user.User
 import com.quizapp.server.main.service.UserService
 import org.springframework.http.HttpStatus
@@ -21,8 +22,13 @@ class RegistrationController(private val userService: UserService) {
 
     @PostMapping
     fun create(@RequestBody userRequest: RegRequest): SignUpResponse {
+        if(userService.findByUserName(userRequest.username))
+            throw CustomException("UserName already Exists")
+        else if(userService.findByEmail(userRequest.email))
+            throw CustomException("Email already Exists")
+
         return SignUpResponse(HttpStatus.OK,"Successfully created user", userService.createUser(userRequest.toModel())?.toResponse()
-                ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot Create a User"))
+                ?:  throw CustomException("Cannot Create a User"))
     }
 
     @GetMapping

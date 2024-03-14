@@ -21,6 +21,13 @@ class UserService(private val encoder: PasswordEncoder, private val userReposito
         return userRepository.findById(uuid).orElse(null)
     }
 
+    fun findByEmail(email: String): Boolean {
+        return userRepository.existsByEmail(email)
+    }
+   fun findByUserName(userName: String): Boolean {
+        return userRepository.existsByUsername(userName)
+    }
+
     fun findAll(): List<User> {
         return userRepository.findAll().toList()
     }

@@ -8,5 +8,8 @@ import java.util.UUID
 @Repository
 interface UserRepository : CrudRepository<User,UUID> {
     fun findByUsername(username : String) : User?
+
+    fun existsByEmail(email: String) : Boolean
+    fun existsByUsername(username: String) : Boolean
 }
 
