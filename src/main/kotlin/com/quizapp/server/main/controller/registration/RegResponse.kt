@@ -6,7 +6,7 @@ import java.util.UUID
 data class SignUpResponse(
         val status: HttpStatus,
         val message:String,
-        val registeredUserInfo: RegisteredUserInfo
+        val registeredUserInfo: RegisteredUserInfo? = null
 )
 data class RegisteredUserInfo(
         val uuid: UUID,

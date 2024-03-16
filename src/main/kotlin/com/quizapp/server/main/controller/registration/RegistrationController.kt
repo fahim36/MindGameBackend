@@ -21,14 +21,19 @@ class RegistrationController(private val userService: UserService) {
 
 
     @PostMapping
-    fun create(@RequestBody userRequest: RegRequest): SignUpResponse {
-        if(userService.findByUserName(userRequest.username))
-            throw CustomException("UserName already Exists")
-        else if(userService.findByEmail(userRequest.email))
-            throw CustomException("Email already Exists")
+    fun create(@RequestBody userRequest: RegRequest): ResponseEntity<SignUpResponse> {
 
-        return SignUpResponse(HttpStatus.OK,"Successfully created user", userService.createUser(userRequest.toModel())?.toResponse()
-                ?:  throw CustomException("Cannot Create a User"))
+        return if (userService.findByUserName(userRequest.username))
+            ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "UserName already Exists"))
+        else if (userService.findByEmail(userRequest.email))
+            ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "Email already Exists"))
+        else {
+            val user = userRequest.toModel()
+            val test = userService.createUser(user)
+            print("hehe$test")
+            ResponseEntity.badRequest()
+                .body(SignUpResponse(HttpStatus.OK, "Successfully created user", user.toResponse()))
+        }
     }
 
     @GetMapping
@@ -39,7 +44,7 @@ class RegistrationController(private val userService: UserService) {
     @GetMapping("/{uuid}")
     fun findByUUID(@PathVariable uuid: UUID): RegisteredUserInfo {
         return userService.findByUUID(uuid)?.toResponse()
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find a User")
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find a User")
     }
 
     @DeleteMapping("/{uuid}")
@@ -55,9 +60,9 @@ class RegistrationController(private val userService: UserService) {
 }
 
 private fun RegRequest.toModel(): User {
-    return User(UUID.randomUUID(), password, username, email, role,isColorBlind ,hasLeaderBoardPermission)
+    return User(UUID.randomUUID(), password, username, email, role, isColorBlind, hasLeaderBoardPermission)
 }
 
 fun User.toResponse(): RegisteredUserInfo {
-    return RegisteredUserInfo(id, username, role, email , hasLeaderBoard_permission , isColorBlind )
+    return RegisteredUserInfo(id, username, role, email, hasLeaderBoard_permission, isColorBlind)
 }
