@@ -2,6 +2,7 @@ package com.quizapp.server.main.controller.auth
 
 import com.quizapp.server.main.service.AuthenticationService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +16,7 @@ class AuthController(
 ) {
 
     @PostMapping
-    fun authenticate(@RequestBody authRequest: AuthenticationRequest) : AuthenticationResponse =
+    fun authenticate(@RequestBody authRequest: AuthenticationRequest) : ResponseEntity<AuthenticationResponse> =
             authenticationService.authentication(authRequest)
 
     @PostMapping("/refresh")

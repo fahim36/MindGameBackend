@@ -3,11 +3,12 @@ package com.quizapp.server.main.service
 import com.quizapp.server.main.config.JwtProperties
 import com.quizapp.server.main.controller.auth.AuthenticationRequest
 import com.quizapp.server.main.controller.auth.AuthenticationResponse
+import com.quizapp.server.main.controller.registration.SignUpResponse
 import com.quizapp.server.main.controller.registration.toResponse
 import com.quizapp.server.main.repository.RefreshTokenRepository
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.AuthenticationServiceException
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.*
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.Date
@@ -20,20 +21,27 @@ class AuthenticationService(
     private val jwtProperties: JwtProperties,
     private val refreshTokenRepository: RefreshTokenRepository,
 ) {
-    fun authentication(authRequest: AuthenticationRequest): AuthenticationResponse {
-        authManager.authenticate(
+    fun authentication(authRequest: AuthenticationRequest):  ResponseEntity<AuthenticationResponse> {
+        try {
+            authManager.authenticate(
                 UsernamePasswordAuthenticationToken(
-                        authRequest.username,
-                        authRequest.password
+                    authRequest.username,
+                    authRequest.password
                 )
-        )
+            )
+        }
+        catch (e: Exception){
+            return ResponseEntity.badRequest().body(AuthenticationResponse(status = HttpStatus.FORBIDDEN,message = "Invalid UserName or Password", accessToken = "" , userResponse = null))
+
+        }
+
 
         val user = userDetailsService.loadUserByUsername(authRequest.username)
-        val refreshToken = generateRefreshToken(user)
         val accessToken = generateAccessToken(user)
-        refreshTokenRepository.save(refreshToken,user)
+//      val refreshToken = generateRefreshToken(user)
+//      refreshTokenRepository.save(refreshToken,user)
         val userDetails = userDetailsService.getUserDetailsByUserName(authRequest.username)
-        return AuthenticationResponse(accessToken = accessToken, refreshToken = refreshToken,userDetails.toResponse())
+        return ResponseEntity.ok().body(AuthenticationResponse(accessToken = accessToken, status = HttpStatus.OK, userResponse =  userDetails.toResponse(),message = "Successfully Logged In"))
     }
 
 

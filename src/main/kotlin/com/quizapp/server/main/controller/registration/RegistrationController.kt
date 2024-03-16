@@ -1,6 +1,5 @@
 package com.quizapp.server.main.controller.registration
 
-import com.quizapp.server.main.exceptions.CustomException
 import com.quizapp.server.main.models.user.User
 import com.quizapp.server.main.service.UserService
 import org.springframework.http.HttpStatus
@@ -29,10 +28,13 @@ class RegistrationController(private val userService: UserService) {
             ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "Email already Exists"))
         else {
             val user = userRequest.toModel()
-            val test = userService.createUser(user)
-            print("hehe$test")
-            ResponseEntity.badRequest()
+            val result = userService.createUser(user)
+            if(result!=null)
+                ResponseEntity.ok()
                 .body(SignUpResponse(HttpStatus.OK, "Successfully created user", user.toResponse()))
+            else
+                ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "Something Went Wrong."))
+
         }
     }
 
