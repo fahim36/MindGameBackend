@@ -17,8 +17,6 @@ import java.util.*
 @RestController
 @RequestMapping("api/register")
 class RegistrationController(private val userService: UserService) {
-
-
     @PostMapping
     fun create(@RequestBody userRequest: RegRequest): ResponseEntity<SignUpResponse> {
 

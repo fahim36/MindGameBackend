@@ -31,7 +31,7 @@ class AuthenticationService(
             )
         }
         catch (e: Exception){
-            return ResponseEntity.badRequest().body(AuthenticationResponse(status = HttpStatus.FORBIDDEN,message = "Invalid UserName or Password", accessToken = "" , userResponse = null))
+            return ResponseEntity.badRequest().body(AuthenticationResponse(status = HttpStatus.BAD_REQUEST,message = "Invalid UserName or Password", accessToken = "" , userResponse = null))
 
         }
 

@@ -26,7 +26,7 @@ data class User(
         @Enumerated(value = EnumType.STRING)
         val role: UserType,
 
-        var isColorBlind: Boolean = true,
+        val isColorBlind: Boolean = true,
 
-        var hasLeaderBoard_permission: Boolean = true,
+        val hasLeaderBoard_permission: Boolean = true,
 )
