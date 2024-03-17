@@ -38,5 +38,7 @@ out/
 
 ### Kotlin ###
 .kotlin
+
 ## generatedImagePath ##
 .image_path
+.image_path/*
