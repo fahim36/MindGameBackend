@@ -16,7 +16,7 @@ class AuthController(
 ) {
 
     @PostMapping
-    fun authenticate(@RequestBody authRequest: AuthenticationRequest) : ResponseEntity<AuthenticationResponse> =
+    fun authenticate(@RequestBody authRequest: AuthenticationRequest) : AuthenticationResponse =
             authenticationService.authentication(authRequest)
 
     @PostMapping("/refresh")

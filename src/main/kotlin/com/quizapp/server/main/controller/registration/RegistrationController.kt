@@ -18,20 +18,19 @@ import java.util.*
 @RequestMapping("api/register")
 class RegistrationController(private val userService: UserService) {
     @PostMapping
-    fun create(@RequestBody userRequest: RegRequest): ResponseEntity<SignUpResponse> {
+    fun create(@RequestBody userRequest: RegRequest): SignUpResponse {
 
         return if (userService.findByUserName(userRequest.username))
-            ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "UserName already Exists"))
+            SignUpResponse(HttpStatus.BAD_REQUEST, "UserName already Exists")
         else if (userService.findByEmail(userRequest.email))
-            ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "Email already Exists"))
+            SignUpResponse(HttpStatus.BAD_REQUEST, "Email already Exists")
         else {
             val user = userRequest.toModel()
             val result = userService.createUser(user)
             if(result!=null)
-                ResponseEntity.ok()
-                .body(SignUpResponse(HttpStatus.OK, "Successfully created user", user.toResponse()))
+                SignUpResponse(HttpStatus.OK, "Successfully created user", user.toResponse())
             else
-                ResponseEntity.badRequest().body(SignUpResponse(HttpStatus.BAD_REQUEST, "Something Went Wrong."))
+                SignUpResponse(HttpStatus.BAD_REQUEST, "Something Went Wrong.")
 
         }
     }

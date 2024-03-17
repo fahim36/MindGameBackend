@@ -21,7 +21,7 @@ class AuthenticationService(
     private val jwtProperties: JwtProperties,
     private val refreshTokenRepository: RefreshTokenRepository,
 ) {
-    fun authentication(authRequest: AuthenticationRequest):  ResponseEntity<AuthenticationResponse> {
+    fun authentication(authRequest: AuthenticationRequest):  AuthenticationResponse {
         try {
             authManager.authenticate(
                 UsernamePasswordAuthenticationToken(
@@ -31,8 +31,7 @@ class AuthenticationService(
             )
         }
         catch (e: Exception){
-            return ResponseEntity.badRequest().body(AuthenticationResponse(status = HttpStatus.BAD_REQUEST,message = "Invalid UserName or Password", accessToken = "" , userResponse = null))
-
+           return AuthenticationResponse(status = HttpStatus.BAD_REQUEST,message = "Invalid UserName or Password", accessToken = "" , userResponse = null)
         }
 
 
@@ -41,7 +40,8 @@ class AuthenticationService(
 //      val refreshToken = generateRefreshToken(user)
 //      refreshTokenRepository.save(refreshToken,user)
         val userDetails = userDetailsService.getUserDetailsByUserName(authRequest.username)
-        return ResponseEntity.ok().body(AuthenticationResponse(accessToken = accessToken, status = HttpStatus.OK, userResponse =  userDetails.toResponse(),message = "Successfully Logged In"))
+
+        return AuthenticationResponse(accessToken = accessToken, status = HttpStatus.OK, userResponse =  userDetails.toResponse(),message = "Successfully Logged In")
     }
 
 
