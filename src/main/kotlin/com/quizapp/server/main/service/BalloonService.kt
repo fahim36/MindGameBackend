@@ -16,6 +16,10 @@ class BalloonService(private val balloonRepository: BalloonRepository) {
         return balloonRepository.findById(id).orElseThrow { NoSuchElementException("Balloon not found") }
     }
 
+    fun getAllBalloon() : List<Balloon>{
+        return balloonRepository.findAll().toList()
+    }
+
     fun updateBalloon(balloon: Balloon): Balloon {
         return balloonRepository.save(balloon)
     }

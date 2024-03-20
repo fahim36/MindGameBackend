@@ -6,7 +6,7 @@ data class RegRequest(
         val username : String,
         val password: String,
         val role : UserType,
-        val email:String,
-        val hasLeaderBoardPermission: Boolean,
-        val isColorBlind:Boolean,
+        val email:String = "",
+        val hasLeaderBoardPermission: Boolean = false,
+        val isColorBlind:Boolean = false,
 )

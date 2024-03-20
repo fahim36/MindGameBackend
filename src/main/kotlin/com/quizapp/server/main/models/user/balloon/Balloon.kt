@@ -1,6 +1,7 @@
 package com.quizapp.server.main.models.user.balloon
 
 import jakarta.persistence.*
+import org.hibernate.annotations.Type
 import java.util.*
 
 @Entity
@@ -11,6 +12,7 @@ data class Balloon(
     val id: UUID,
     @Column(nullable = false)
     val shuffleNumber: Int,
-    @Column(nullable = false)
+    @Lob // Use @Lob annotation for large objects
+    @Column(nullable = false, length = 10485760, columnDefinition = "Text") // Set a large length for the column
     val balloonImage: String
 )
