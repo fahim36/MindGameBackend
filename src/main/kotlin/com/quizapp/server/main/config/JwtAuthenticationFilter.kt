@@ -5,6 +5,7 @@ import com.quizapp.server.main.service.TokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -12,13 +13,18 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import org.springframework.web.servlet.HandlerExceptionResolver
 
 
 @Component
 class JwtAuthenticationFilter(
-        private val userDetailsService: CustomUserDetailsService,
-        private val tokenService: TokenService
+       val handlerExceptionResolver: HandlerExceptionResolver
 ) : OncePerRequestFilter() {
+
+    @Autowired
+    private lateinit var userDetailsService: CustomUserDetailsService
+    @Autowired
+    private lateinit var tokenService: TokenService
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
         val authHeader: String? = request.getHeader("Authorization")
         if (authHeader.doesNotContainBearerToken()) {
@@ -27,14 +33,17 @@ class JwtAuthenticationFilter(
         }
         val jwtToken = authHeader?.extractTokenValue()
         if (jwtToken != null){
-            val username = tokenService.extractEmail(jwtToken)
-            if (username != null && SecurityContextHolder.getContext().authentication == null){
-                val foundUser = userDetailsService.loadUserByUsername(username)
-                if (tokenService.isValid(jwtToken,foundUser)) {
-                    updateContext(foundUser,request)
+            try {
+                val username = tokenService.extractEmail(jwtToken)
+                if (username != null && SecurityContextHolder.getContext().authentication == null){
+                    val foundUser = userDetailsService.loadUserByUsername(username)
+                    if (tokenService.isValid(jwtToken,foundUser)) {
+                        updateContext(foundUser,request)
+                    }
+                    filterChain.doFilter(request, response)
                 }
-
-                filterChain.doFilter(request, response)
+            }catch (e:Exception){
+                handlerExceptionResolver.resolveException(request,response,null,e)
             }
         }
     }

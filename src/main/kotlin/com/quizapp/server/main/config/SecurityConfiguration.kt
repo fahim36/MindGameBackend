@@ -3,6 +3,8 @@ package com.quizapp.server.main.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.quizapp.server.main.repository.user.UserType
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -16,12 +18,23 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.servlet.HandlerExceptionResolver
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
     private val authenticationProvider: AuthenticationProvider
 ) {
+
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    lateinit var exceptionResolver : HandlerExceptionResolver
+
+    @Bean
+    fun jwtAuthenticationFilter() : JwtAuthenticationFilter {
+        return JwtAuthenticationFilter(exceptionResolver)
+    }
+
 
     @Bean
     fun securityFilterChain(
@@ -46,7 +59,7 @@ class SecurityConfiguration(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
             .exceptionHandling {
                 it.authenticationEntryPoint { _, response, authException ->
                     val objectMapper = ObjectMapper()
