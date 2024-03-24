@@ -24,7 +24,8 @@ data class Level(
 data class Question(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val questionId: Long? = null,
-    val questionText: String,
+    val questionTextImg: String,
+    val questionOptionsImg: List<String>,
     val topicId: String,
     val levelId: String,
     val correctAnswer: String
