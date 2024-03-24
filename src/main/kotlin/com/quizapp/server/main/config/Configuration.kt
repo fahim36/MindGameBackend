@@ -2,7 +2,6 @@ package com.quizapp.server.main.config
 
 import com.quizapp.server.main.repository.user.UserRepository
 import com.quizapp.server.main.service.CustomUserDetailsService
-import com.quizapp.server.main.config.JwtProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

@@ -5,7 +5,6 @@ import com.google.cloud.storage.Bucket
 import com.google.cloud.storage.StorageOptions
 import com.quizapp.server.main.models.user.balloon.Balloon
 import com.quizapp.server.main.service.BalloonService
-import org.springframework.boot.autoconfigure.web.ServerProperties
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.core.io.Resource
 import org.springframework.http.HttpHeaders
@@ -31,7 +30,7 @@ class BalloonController(private val balloonService: BalloonService) {
     }
 
     fun uploadImageToFirebaseStorage(image: MultipartFile): String {
-        val credentials = GoogleCredentials.fromStream(File("/Users/bjit/Downloads/QuizApp/credentials.json").inputStream())
+        val credentials = GoogleCredentials.fromStream(File("D:\\Projects\\MindGameBackend\\credentials.json").inputStream())
         val storage = StorageOptions.newBuilder().setCredentials(credentials).build().service
 
         val bucketName = "mindgame-9651c.appspot.com"

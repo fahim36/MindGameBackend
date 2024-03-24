@@ -2,10 +2,9 @@ package com.quizapp.server.main.service
 
 import com.quizapp.server.main.models.user.User
 import com.quizapp.server.main.repository.user.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class UserService(private val encoder: PasswordEncoder, private val userRepository: UserRepository) {

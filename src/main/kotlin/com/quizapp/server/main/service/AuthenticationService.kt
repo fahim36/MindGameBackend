@@ -3,15 +3,14 @@ package com.quizapp.server.main.service
 import com.quizapp.server.main.config.JwtProperties
 import com.quizapp.server.main.controller.auth.AuthenticationRequest
 import com.quizapp.server.main.controller.auth.AuthenticationResponse
-import com.quizapp.server.main.controller.registration.SignUpResponse
 import com.quizapp.server.main.controller.registration.toResponse
 import com.quizapp.server.main.repository.RefreshTokenRepository
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.security.authentication.*
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
-import java.util.Date
+import java.util.*
 
 @Service
 class AuthenticationService(

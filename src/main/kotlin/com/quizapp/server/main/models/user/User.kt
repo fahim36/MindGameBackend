@@ -1,7 +1,6 @@
 package com.quizapp.server.main.models.user
 
 import com.quizapp.server.main.repository.user.UserType
-import jakarta.annotation.Generated
 import jakarta.persistence.*
 import java.util.*
 

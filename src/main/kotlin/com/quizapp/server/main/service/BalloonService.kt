@@ -4,7 +4,6 @@ import com.quizapp.server.main.models.user.balloon.Balloon
 import com.quizapp.server.main.repository.BalloonRepository
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.NoSuchElementException
 
 @Service
 class BalloonService(private val balloonRepository: BalloonRepository) {

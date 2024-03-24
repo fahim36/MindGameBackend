@@ -1,7 +1,6 @@
 package com.quizapp.server.main.models.user.balloon
 
 import jakarta.persistence.*
-import org.hibernate.annotations.Type
 import java.util.*
 
 @Entity
