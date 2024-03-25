@@ -10,7 +10,7 @@ data class SignUpResponse(
         val registeredUserInfo: RegisteredUserInfo? = null
 )
 data class RegisteredUserInfo(
-        val uuid: UUID,
+        val id: Long?,
         val username : String,
         val role : UserType,
         val email:String,

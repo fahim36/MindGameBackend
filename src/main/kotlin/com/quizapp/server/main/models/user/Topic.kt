@@ -1,9 +1,6 @@
 package com.quizapp.server.main.models.user
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 data class Topic(
@@ -25,9 +22,10 @@ data class Question(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val questionId: Long? = null,
     val questionTextImg: String,
-    val questionOptionsImg: List<String>,
-    val topicId: String,
-    val levelId: String,
+    @ElementCollection
+    val questionOptionsImg : List<String>,
+    val topicId: Long,
+    val levelId: Long,
     val correctAnswer: String
 )
 
@@ -35,7 +33,7 @@ data class Question(
 data class TestResult(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val resultId: Long? = null,
-    val userId: String,
+    val userId: Long,
     val score: Int
 )
 
@@ -43,8 +41,8 @@ data class TestResult(
 data class Leaderboard(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val leaderboardId: Long? = null,
-    val userId: String,
-    val topicId: String,
-    val levelId: String,
+    val userId: Long,
+    val topicId: Long,
+    val levelId: Long,
     val score: Int
 )

@@ -10,7 +10,7 @@ data class User(
         @Column
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: UUID,
+        val id: Long? = null,
 
         @Column(nullable = false)
         val password: String,

@@ -4,4 +4,4 @@ import com.quizapp.server.main.models.user.balloon.Balloon
 import org.springframework.data.repository.CrudRepository
 import java.util.*
 
-interface BalloonRepository : CrudRepository<Balloon, UUID>
+interface BalloonRepository : CrudRepository<Balloon, Long>

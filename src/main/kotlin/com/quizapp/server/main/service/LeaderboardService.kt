@@ -22,7 +22,7 @@ class LeaderboardService {
         leaderboardRepository.deleteById(leaderboardId)
     }
     fun getTopScoresByTopicAndLevel(topicId: Long, levelId: Long): List<Leaderboard>? {
-        return leaderboardRepository.findTop10ByTopicIdAndLevelIdOrderByScoreDesc(topicId,levelId)
+        return leaderboardRepository.findByTopicIdAndLevelIdOrderByScoreDesc(topicId,levelId)
     }
 
     fun getResultsByUserId(userId: Long): TestResult {

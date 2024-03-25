@@ -34,15 +34,15 @@ class RegistrationController(private val userService: UserService) {
         return userService.findAll().map { it.toResponse() }
     }
 
-    @GetMapping("/{uuid}")
-    fun findByUUID(@PathVariable uuid: UUID): RegisteredUserInfo {
-        return userService.findByUUID(uuid)?.toResponse()
+    @GetMapping("/{id}")
+    fun findByUUID(@PathVariable id: Long): RegisteredUserInfo {
+        return userService.findById(id)?.toResponse()
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot find a User")
     }
 
-    @DeleteMapping("/{uuid}")
-    fun deleteByUUID(@PathVariable uuid: UUID): ResponseEntity<Boolean> {
-        val success = userService.deleteByUUID(uuid)
+    @DeleteMapping("/{id}")
+    fun deleteByUUID(@PathVariable id: Long): ResponseEntity<Boolean> {
+        val success = userService.deleteById(id)
 
         return if (success) {
             ResponseEntity.noContent().build()
@@ -53,7 +53,7 @@ class RegistrationController(private val userService: UserService) {
 }
 
 private fun RegRequest.toModel(): User {
-    return User(UUID.randomUUID(), password, username, email, role, isColorBlind, hasLeaderBoardPermission)
+    return User(password = password, username = username, email = email, role = role, isColorBlind =  isColorBlind, hasLeaderBoard_permission =  hasLeaderBoardPermission)
 }
 
 fun User.toResponse(): RegisteredUserInfo {

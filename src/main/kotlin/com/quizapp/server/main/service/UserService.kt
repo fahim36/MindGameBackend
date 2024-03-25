@@ -16,8 +16,8 @@ class UserService(private val encoder: PasswordEncoder, private val userReposito
         } else null
     }
 
-    fun findByUUID(uuid: UUID): User? {
-        return userRepository.findById(uuid).orElse(null)
+    fun findById(id: Long): User? {
+        return userRepository.findById(id).orElse(null)
     }
 
     fun findByEmail(email: String): Boolean {
@@ -31,7 +31,7 @@ class UserService(private val encoder: PasswordEncoder, private val userReposito
         return userRepository.findAll().toList()
     }
 
-    fun deleteByUUID(uuid: UUID): Boolean {
+    fun deleteById(uuid: Long): Boolean {
         if (userRepository.findById(uuid).orElse(null) != null) {
             userRepository.deleteById(uuid)
             return true

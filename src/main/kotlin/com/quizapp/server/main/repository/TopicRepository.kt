@@ -7,27 +7,27 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TopicRepository : CrudRepository<Topic, Long>{
     // Method to create a new topic
-    fun saveTopic(topic: Topic): Topic
+    fun save(topic: Topic): Topic
 
     // Method to delete a topic by topic ID
-    fun deleteTopicById(topicId: Long)
+    fun deleteByTopicId(topicId: Long)
 }
 
 @Repository
 interface LevelRepository : CrudRepository<Level, Long>{
     // Method to create a new level
-    fun saveLevel(level: Level): Level
+    fun save(level: Level): Level
 
     // Method to delete a level by level ID
-    fun deleteLevelById(levelId: Long)
+    fun deleteLevelByLevelId(levelId: Long)
 }
 
 @Repository
 interface QuestionRepository : CrudRepository<Question, Long>{
-    fun saveQuestion(question: Question): Question
+    fun save(question: Question): Question
 
     // Method to delete a question by question ID
-    fun deleteQuestionById(questionId: Long)
+    fun deleteQuestionsByQuestionId(questionId: Long)
 
     fun findByLevelIdAndTopicId(levelId: Long, topicId: Long): List<Question>
 
@@ -35,16 +35,13 @@ interface QuestionRepository : CrudRepository<Question, Long>{
 
 interface LeaderboardRepository : CrudRepository<Leaderboard, Long>{
     // Method to create a new leaderboard entry
-    fun saveLeaderboardEntry(leaderboardEntry: Leaderboard): Leaderboard
+    fun save(leaderboardEntry: Leaderboard): Leaderboard
 
     // Method to delete a leaderboard entry by leaderboard ID
-    fun deleteLeaderboardEntryById(leaderboardId: Long)
+    fun deleteByLeaderboardId(leaderboardId: Long)
 
     // Method to retrieve the top 10 highest scores by topic or complexity
-    fun findTop10ByTopicIdAndLevelIdOrderByScoreDesc(topicId: Long,levelId: Long): List<Leaderboard>
-
-
-
+    fun findByTopicIdAndLevelIdOrderByScoreDesc(topicId: Long, levelId: Long): List<Leaderboard>
 }
 
 interface ResultRepository : CrudRepository<TestResult, Long>{

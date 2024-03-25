@@ -11,7 +11,7 @@ class BalloonService(private val balloonRepository: BalloonRepository) {
         return balloonRepository.save(balloon)
     }
 
-    fun getBalloonById(id: UUID): Balloon {
+    fun getBalloonById(id: Long): Balloon {
         return balloonRepository.findById(id).orElseThrow { NoSuchElementException("Balloon not found") }
     }
 
@@ -23,7 +23,7 @@ class BalloonService(private val balloonRepository: BalloonRepository) {
         return balloonRepository.save(balloon)
     }
 
-    fun deleteBalloonById(id: UUID) {
+    fun deleteBalloonById(id: Long) {
         balloonRepository.deleteById(id)
     }
 }

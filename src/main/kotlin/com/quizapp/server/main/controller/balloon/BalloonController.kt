@@ -25,7 +25,7 @@ class BalloonController(private val balloonService: BalloonService) {
     @PostMapping("/createBalloon")
     fun createBalloon(@RequestParam("image") image: MultipartFile, @RequestParam("shuffleNumber") shuffleNumber: Int): Balloon {
         val imageUrl = uploadImageToFirebaseStorage(image)
-        val balloon = Balloon(id = UUID.randomUUID(), shuffleNumber = shuffleNumber, balloonImage = imageUrl)
+        val balloon = Balloon(shuffleNumber = shuffleNumber, balloonImage = imageUrl)
         return balloonService.saveBalloon(balloon)
     }
 
@@ -48,7 +48,7 @@ class BalloonController(private val balloonService: BalloonService) {
         return ResponseEntity.ok(balloon)
     }
     @GetMapping("getBalloonImageById/{id}")
-    fun getBalloonImageById(@PathVariable id: UUID): ResponseEntity<Resource> {
+    fun getBalloonImageById(@PathVariable id: Long): ResponseEntity<Resource> {
         val balloon = balloonService.getBalloonById(id)
         val file = File(balloon.balloonImage)
         val resource = ByteArrayResource(file.readBytes())

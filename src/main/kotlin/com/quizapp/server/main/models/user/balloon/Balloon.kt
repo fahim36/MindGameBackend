@@ -8,7 +8,7 @@ data class Balloon(
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: UUID,
+    val id: Long? = null,
     @Column(nullable = false)
     val shuffleNumber: Int,
     @Lob // Use @Lob annotation for large objects
