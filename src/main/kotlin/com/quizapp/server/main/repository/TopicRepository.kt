@@ -1,8 +1,10 @@
 package com.quizapp.server.main.repository
 
 import com.quizapp.server.main.models.user.*
+import com.quizapp.server.main.models.user.StringListConverter
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
+
 
 @Repository
 interface TopicRepository : CrudRepository<Topic, Long>{
@@ -30,8 +32,12 @@ interface QuestionRepository : CrudRepository<Question, Long>{
     fun deleteQuestionsByQuestionId(questionId: Long)
 
     fun findByLevelIdAndTopicId(levelId: Long, topicId: Long): List<Question>
+    fun findByCategory(category: String): List<Question>
+
 
 }
+
+
 
 interface LeaderboardRepository : CrudRepository<Leaderboard, Long>{
     // Method to create a new leaderboard entry

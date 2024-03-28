@@ -25,7 +25,6 @@ class RegistrationController(private val userService: UserService) {
                 SignUpResponse(HttpStatus.OK, "Successfully created user", user.toResponse())
             else
               SignUpResponse(HttpStatus.BAD_REQUEST, "Something Went Wrong.")
-
         }
     }
 

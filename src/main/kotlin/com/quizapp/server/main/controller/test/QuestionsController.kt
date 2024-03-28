@@ -1,20 +1,32 @@
 package com.quizapp.server.main.controller.test
 
+import com.quizapp.server.main.Utils.uploadImageToFirebaseStorage
 import com.quizapp.server.main.models.user.Question
+import com.quizapp.server.main.models.user.reqbody.CreateQuestionReqBody
+import com.quizapp.server.main.models.user.reqbody.toQuestion
 import com.quizapp.server.main.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 @RestController
-@RequestMapping("/users/questions")
+@RequestMapping("/api/users/questions")
 class QuestionController {
 
     @Autowired
     private lateinit var questionService: QuestionService
 
     @PostMapping("/create")
-    fun createQuestion(@RequestBody question: Question): ResponseEntity<Question> {
-        val createdQuestion = questionService.createQuestion(question)
+    fun createQuestion(@ModelAttribute question: CreateQuestionReqBody): QuestionCreationResponse {
+        val questionImage = uploadImageToFirebaseStorage(question.questionTextImg)
+        val optionImages = uploadImageToFirebaseStorage(question.questionOptionsImg)
+        val createdQuestion = questionService.createQuestion(question.toQuestion(questionImage,optionImages))
+        return QuestionCreationResponse(HttpStatus.OK,"Created Successfully", question = createdQuestion)
+    }
+
+    @GetMapping("/getQuestionsByCategory")
+    fun createQuestion(@RequestBody category: String): ResponseEntity<List<Question>> {
+        val createdQuestion = questionService.getQuestionsByCategory(category)
         return ResponseEntity.ok(createdQuestion)
     }
 

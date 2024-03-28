@@ -22,4 +22,8 @@ class QuestionService {
     fun getQuestionsByTopicAndLevel(topicId: Long, levelId: Long): List<Question> {
         return questionRepository.findByLevelIdAndTopicId(topicId, levelId) ?: emptyList()
     }
+
+    fun getQuestionsByCategory(category:String): List<Question> {
+        return questionRepository.findByCategory(category) ?: emptyList()
+    }
 }
